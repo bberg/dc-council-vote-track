@@ -7,8 +7,8 @@ import re
 import json
 import pdf2image
 import pytesseract
-import configparser
 from pytesseract import Output
+import argparse
 try:
     import cPickle as pickle
 except ModuleNotFoundError:
@@ -494,18 +494,15 @@ def readPDF(filename,debug=False):
 if __name__ == "__main__":
     # TODO feature to update a bill if last update is older than a specified date or duration
 
-    # CONFIGURATION  ==================================
-    # See https://lims.dccouncil.us/api/help/index.html#!/PublicData/GetLegislationCategories
-    type = "1"
-    # See https://lims.dccouncil.us/api/help/index.html#!/PublicData/GetCouncilPeriods
-    councilPeriodId = "20"
-    # END CONFIGURATION  ==================================
+    parser = argparse.ArgumentParser()
+    parser.add_argument("token",type=str,help="LIMS access token, Get your token from https://lims.dccouncil.us/developerRegistration")
+    parser.add_argument("councilPeriodId", type=str, help="Council Period ID, https://lims.dccouncil.us/api/help/index.html#!/PublicData/GetCouncilPeriods, default=24 (2021-2022)",default="24")
+    parser.add_argument("legislationType", type=str, help="Legislation Type, see https://lims.dccouncil.us/api/help/index.html#!/PublicData/GetLegislationCategories, default=1 (Bill)",default="1")
 
-
-    config = configparser.ConfigParser()
-    config.read('secret.ini')
-    # Get your token from https://lims.dccouncil.us/developerRegistration
-    token = config['secret']['token']
+    args = parser.parse_args()
+    type = args.legislationType
+    councilPeriodId = args.councilPeriodId
+    token = args.token
 
     # Setup global variables
     global lastAPIrequest
