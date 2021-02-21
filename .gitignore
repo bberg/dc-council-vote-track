@@ -1,0 +1,6 @@
+# Custom
+data/
+*.csv
+*.pdf
+*.ini
+*.idea
