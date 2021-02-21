@@ -11,7 +11,7 @@ python3 dc_council.py <token> 23 1
 ```
 
 ### Output
-Example Output [](outputListOfVotes_1_23.csv)
+Example Output: [Output CSV File](outputListOfVotes_1_23.csv)
 
 ### Details
 ```
@@ -41,7 +41,7 @@ PDF processing was designed specifically around amendment votes int he Committee
 3. Use OCR to read council member names and identify the location of dots that will indicate different vote outcomes (Yes, No, Present, Absent)
 4. Read the color of the pixels at those target locations, determine if the location is blank or has a blue dot indicating the vote outcome
 
-*See pixels analyzed for vote outcomes in an example image below*
+*See an example image below - red pixels were analzyed to determine the vote outcome.*
 
 ![pdf processing LIMS dc council data](test.png)
 
