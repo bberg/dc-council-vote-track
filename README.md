@@ -11,7 +11,7 @@ python3 dc_council.py <token> 23 1
 ```
 
 ### Output
-Example Output 
+Example Output [](outputListOfVotes_1_23.csv)
 
 ### Details
 ```
@@ -43,7 +43,7 @@ PDF processing was designed specifically around amendment votes int he Committee
 
 *See pixels analyzed for vote outcomes in an example image below*
 
-
+![pdf processing LIMS dc council data](test.png)
 
 
 ## LIMS Information
