@@ -1,4 +1,4 @@
-# dc-council-votes
+# dc-council-vote-track
 The Council of the District of Columbia hosts a Legislative Information Management System (LIMS) which provides access to information about the legislative activities of the council via API. However, the API has a few deficiencies: 
 1. The API structure makes it challenging to output a flat file of vote records. This script parses the API to create a flat csv file that contains most information for each vote including the vote records of individual council members. 
 2. Some votes are recorded in PDF files, and are not recorded in the API. This script automatically downloads those PDF files and uses OCR and image analysis to parse the PDF files and decode available vote records.
