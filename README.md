@@ -1,12 +1,43 @@
-# dc-council-vote-track
-The Council of the District of Columbia hosts a Legislative Information Management System (LIMS) which provides access to information about the legislative activities of the council via API. However, the API has a few deficiencies: 
-1. The API structure makes it challenging to output a flat file of vote records. This script parses the API to create a flat csv file that contains most information for each vote including the vote records of individual council members. 
-2. Some votes are recorded in PDF files, and are not recorded in the API. This script automatically downloads those PDF files and uses OCR and image analysis to parse the PDF files and decode available vote records.
+# DC Council Vote Tracker
 
-## Usage
+The Council of the District of Columbia hosts a Legislative Information Management System (LIMS) which provides access to information about the legislative activities of the council via API. This project has now been updated to host a Flask-based website that showcases the processed results.
+
+---
+
+## Flask Website Setup
+
+### Prerequisites
+- Python 3.x installed in your system
+
+### Installation Steps
+1. Clone the repository and switch to the `convert-to-flask-website` branch:
+   ```bash
+   git clone https://github.com/bberg/dc-council-vote-track.git
+   cd dc-council-vote-track
+   git checkout convert-to-flask-website
+   ```
+2. Create and activate a virtual environment (optional but recommended):
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate  # Use `venv\Scripts\activate` on Windows
+   ```
+3. Install the dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+### Running the Web Application
+   ```bash
+   flask run
+   ```
+   The website will be available at `http://127.0.0.1:5000/` by default.
+
+---
+
+## Original Usage (Vote Processing Script)
 
 ### Example
-```
+```bash
 python3 dc_council.py <token> 23 1
 ```
 
@@ -14,39 +45,30 @@ python3 dc_council.py <token> 23 1
 Example Output: [Output CSV File](outputListOfVotes_1_23.csv)
 
 ### Details
-```
+```bash
 python3 dc_council.py <token> <councilPeriodId> <legislationType>
 ```
 
-  - **token**   A LIMS developer access token is required. Get the token [here](https://lims.dccouncil.us/developerRegistration)
-  -  **councilPeriodId**  Council Period ID, https://lims.dccouncil.us/api/help/index.html#!/PublicData/GetCouncilPeriods, default=24 (2021-2022)
-*Periods 20-24 have been tested*  
+- **token**: A LIMS developer access token is required. Get the token [here](https://lims.dccouncil.us/developerRegistration)
+- **councilPeriodId**: Council Period ID, default = 24 (2021-2022)
+- **legislationType**: Legislation Type, default = 1 (Bill)
 
-  - **legislationType**  Legislation Type, see https://lims.dccouncil.us/api/help/index.html#!/PublicData/GetLegislationCategories, default=1 (Bill)
-  *Type 1 (Bill) has been tested*
+*Periods 20-24 have been tested.*
 
+*Type 1 (Bill) has been tested.*
 
+---
 
 ## Design
-Since LIMS imposes rate limiting and PDF processing is slow, we use a basic CSV file to keep track of progress when processing data about each individual bill. In the event of an issue during a script run, the script can be restarted and will pick up where it left off. 
 
-Data about each bill is stored locally in a pickle file in the data/*legislationType*_*councilPeriodID*/ directory.
+This repository processes data from LIMS and now also provides results via a website interface. For more details, see the structure of the codebase.
 
-After data analysis is complete for each bill, the data about each bill is re-loaded and output as a single csv file.
+- Original script: Automates API and OCR tasks to generate vote data
+- Flask addition: Hosts the newly structured information
 
-### PDF Processing
-PDF processing was designed specifically around amendment votes in the Committee of the Whole in council period 23 (e.g. B23-0760) where vote tallies were recorded in PDF format only. Multiple votes can be tallied per PDF, so we scan every page for potential votes. 
-1. Convert the PDF into a series of images
-2. Analyze each page using the Tesseract Optical Character Recognition (OCR) library for a string that is present on pages that record votes.
-3. Use OCR to read council member names and identify the location of dots that will indicate different vote outcomes (Yes, No, Present, Absent)
-4. Read the color of the pixels at those target locations, determine if the location is blank or has a blue dot indicating the vote outcome
-
-*See an example image below - red pixels were analzyed to determine the vote outcome.*
-
-![pdf processing LIMS dc council data](test.png)
-
+---
 
 ## LIMS Information
-- https://lims.dccouncil.us/ 
-- https://lims.dccouncil.us/api/help/index.html (API Info)
-- https://lims.dccouncil.us/developerRegistration (Developer Authorization)
+- [LIMS Website](https://lims.dccouncil.us/)
+- [API Documentation](https://lims.dccouncil.us/api/help/index.html)
+- [Developer Registration](https://lims.dccouncil.us/developerRegistration)
